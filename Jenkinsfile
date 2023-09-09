@@ -15,7 +15,7 @@ pipeline {
         stage('push image to dockerhub') {
             steps {
                 sh 'docker compose build'
-                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PWD | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh 'docker compose push'
             }
         }
