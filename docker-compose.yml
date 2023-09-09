@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  backend:
+    image: mynote:backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    entrypoint: ["sh", "/app/entrypoint.sh"]
+    ports:
+    - "8000:8000"
+    - "8001:8001"
+    volumes:
+    - ./backend:/app
+
+  frontend:
+    image: mynote:frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    command: npm start
+    ports:
+    - "3000:3000"
+    volumes:
+    - ./frontend:/app
+    - static:/app/build
+
+  nginx:
+    image: mynote:nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.nginx
+    volumes:
+    - static:/static
+    ports:
+    - "80:80"
+    depends_on:
+    - frontend
+
+volumes:
+  static:
