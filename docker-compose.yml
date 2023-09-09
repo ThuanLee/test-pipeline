@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   backend:
-    image: mynote:backend
+    image: thuanlee215/mynote:backend
     build:
       context: ./backend
       dockerfile: Dockerfile.backend
@@ -13,7 +13,7 @@ services:
     - ./backend:/app
 
   frontend:
-    image: mynote:frontend
+    image: thuanlee215/mynote:frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
@@ -25,7 +25,7 @@ services:
     - static:/app/build
 
   nginx:
-    image: mynote:nginx
+    image: thuanlee215/mynote:nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile.nginx

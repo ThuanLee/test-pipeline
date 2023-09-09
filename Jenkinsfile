@@ -11,14 +11,16 @@ pipeline {
         }
         stage('build container') {
             steps {
-                sh 'docker compose up -d'
-                sh 'docker compose ps'
+                sh 'pwd'
+                sh 'ls'
+                sh 'docker compose build'
+                sh 'docker compose push'
             }
         }
     }
     post {
         always {
-            sh 'docker compose ps'
+            echo 'Complete, Good bye!!'
         }
     }
 }
