@@ -19,7 +19,7 @@ pipeline {
                     withSonarQubeEnv('Sonarqube') {
                         sh "${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=develop \
-                        -Dsonar.inclusions=frontend/src/**, backend/**, nginx/**"
+                        -Dsonar.inclusions=frontend/src/**,backend/**,nginx/**"
                     }
                 }
             }
