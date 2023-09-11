@@ -4,7 +4,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
     }
     stages {
-        stage('check version') {
+        stage('Check docker') {
             steps {
                 sh '''
                     docker version
@@ -12,23 +12,32 @@ pipeline {
                 '''
             }
         }
-        stage('sonarqube analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     def scannerHome = tool 'SonarQube Scanner 5.0'
                     withSonarQubeEnv('Sonarqube') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                        sh "${scannerHome}/bin/sonar-scanner 
+                        -Dsonar.projectKey=develop 
+                        -Dsonar.inclusions=frontend/src/**, backend/**, nginx/**"
                     }
                 }
             }
         }
-        // stage('push image to dockerhub') {
-        //     steps {
-        //         sh 'docker compose build'
-        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-        //         sh 'docker compose push'
-        //     }
-        // }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 3, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Build and push image to dockerhub') {
+            steps {
+                sh 'docker compose build'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker compose push'
+            }
+        }
     }
     post {
         always {
