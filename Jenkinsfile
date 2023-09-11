@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'SonarQube Scanner 5.0'
-                    withSonarQubeEnv('Sonarqube', envOnly: true) {
+                    withSonarQubeEnv('Sonarqube') {
                         println "${env.SONAR_HOST_URL}"
                     }
                 }
