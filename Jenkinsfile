@@ -14,9 +14,11 @@ pipeline {
         }
         stage('sonarqube analysis') {
             steps {
-                def scannerHome = tool 'SonarQube Scanner 5.0'
-                withSonarQubeEnv('Sonarqube', envOnly: true) {
-                    println ${env.SONAR_HOST_URL} 
+                script {
+                    def scannerHome = tool 'SonarQube Scanner 5.0'
+                    withSonarQubeEnv('Sonarqube', envOnly: true) {
+                        println "${env.SONAR_HOST_URL}"
+                    }
                 }
             }
         }
