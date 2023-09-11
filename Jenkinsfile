@@ -17,18 +17,17 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarQube Scanner 5.0'
                     withSonarQubeEnv('Sonarqube') {
-                        println "${env.SONAR_HOST_URL}"
-                    }
+                        sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
-        stage('push image to dockerhub') {
-            steps {
-                sh 'docker compose build'
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker compose push'
-            }
-        }
+        // stage('push image to dockerhub') {
+        //     steps {
+        //         sh 'docker compose build'
+        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //         sh 'docker compose push'
+        //     }
+        // }
     }
     post {
         always {
